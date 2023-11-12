@@ -13,14 +13,22 @@ class QuotesSpider(scrapy.Spider):
             link = div_element.css("a::attr(href)").get()
             name = div_element.css("a::text").get()
 
-            yield scrapy.Request(
-                url=link, callback=self.parse_link, meta={"name": name}
-            )
+            if link:
+                full_url = response.urljoin(link)
+
+                yield scrapy.Request(
+                    url=full_url,
+                    callback=self.parse_link,
+                    meta={"name": name, "url": full_url},
+                )
+            else:
+                yield {"name": name, "url": link}
 
     def parse_link(self, response):
         name = response.meta["name"]
+        url = response.meta["url"]
 
-        yield {"name": name, "url": response.url}
+        yield {"name": name, "url": url}
 
 
 # scrapy crawl cv_market_links_spider -o output.json
