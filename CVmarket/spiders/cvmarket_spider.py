@@ -31,7 +31,7 @@ class QuotesSpider(scrapy.Spider):
         url = response.meta["url"]
         category_id = response.meta["category_id"]
 
-        for item in response.css("div.flex.flex-shrink.flex-auto.flex-grow"):
+        for item in response.css("article.flex-col"):
             href = item.css("div.main-info a::attr(href)").get()
             description = item.css(
                 "h2.xl\\:text-xl.font-bold.mt-2.hover\\:underline::text"
@@ -41,6 +41,7 @@ class QuotesSpider(scrapy.Spider):
             salary_from = item.css("div.salary-block::attr(data-salary-from)").get()
             salary_to = item.css("div.salary-block::attr(data-salary-to)").get()
             salary_type = item.css("span.salary-type::text").get()
+            city = item.css("span.bg-blue-50 div::text").get()
 
             yield {
                 "category_id": category_id,
@@ -50,7 +51,11 @@ class QuotesSpider(scrapy.Spider):
                 "salary_from": salary_from,
                 "salary_to": salary_to,
                 "salary_type": salary_type,
+                "city": city,
             }
+        next_page = response.css("a.flex.rounded-full::attr(href)")
+        full_url = response.urljoin(next_page)
+        yield response.follow(full_url, self.parse)
 
         # yield {"name": name, "url": url, "category_id": category_id}
 
