@@ -1,5 +1,6 @@
 import scrapy
 from urllib.parse import urljoin
+import time
 
 
 class QuotesSpider(scrapy.Spider):
@@ -31,8 +32,12 @@ class QuotesSpider(scrapy.Spider):
 
     def parse_link(self, response):
         url_general = response.meta["general_url"]
-        np = response.css("div.lg\\:container a.flex.rounded-full::attr(href)").get()
+        try:
+            page = response.meta["page"]
+        except:
+            page = "first_page"
 
+        time.sleep(5)
         for item in response.css(
             "div.lg\\:container section.flex.flex-col article.flex-col.lg\\:flex-row"
         ):
@@ -48,7 +53,7 @@ class QuotesSpider(scrapy.Spider):
             city = item.css("span.bg-blue-50 div::text").get()
 
             yield {
-                "np": np,
+                "np": page,
                 "url_general": url_general,
                 "link": href,
                 "description": description,
@@ -58,12 +63,11 @@ class QuotesSpider(scrapy.Spider):
                 "salary_type": salary_type,
                 "city": city,
             }
-        next_page = response.css(
-            "div.lg\\:container a.flex.rounded-full.text-base::attr(href)"
+
+        next_page = response.xpath(
+            "/html/body/section/main/div[1]/div/ul/li[10]/a/@href"
         ).get()
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        # /html/body/section/main/div[1]/div/ul/li[10]/a
-        # /html/body/section/main/div[1]/div/ul/li[10]/a
         # or +25
 
         next_page_url = urljoin(url_general, next_page)
@@ -72,7 +76,7 @@ class QuotesSpider(scrapy.Spider):
             yield scrapy.Request(
                 url=next_page_url,
                 callback=self.parse_link,
-                meta={"general_url": url_general},
+                meta={"general_url": url_general, "page": next_page},
             )
 
         # yield {"name": name, "url": url, "category_id": category_id}
