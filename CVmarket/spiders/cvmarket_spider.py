@@ -1,7 +1,5 @@
 import scrapy
-
-import scrapy
-import bs4
+from urllib.parse import urljoin
 
 
 class QuotesSpider(scrapy.Spider):
@@ -20,18 +18,24 @@ class QuotesSpider(scrapy.Spider):
                 yield scrapy.Request(
                     url=full_url,
                     callback=self.parse_link,
-                    meta={"name": name, "url": full_url, "category_id": category_id},
+                    meta={
+                        "name": name,
+                        "general_url": full_url,
+                        "category_id": category_id,
+                    },
                 )
                 n = n + 1
+                break
             else:
                 yield {"name": name, "url": link}
 
     def parse_link(self, response):
-        name = response.meta["name"]
-        url = response.meta["url"]
-        category_id = response.meta["category_id"]
+        url_general = response.meta["general_url"]
+        np = response.css("div.lg\\:container a.flex.rounded-full::attr(href)").get()
 
-        for item in response.css("article.flex-col"):
+        for item in response.css(
+            "div.lg\\:container section.flex.flex-col article.flex-col.lg\\:flex-row"
+        ):
             href = item.css("div.main-info a::attr(href)").get()
             description = item.css(
                 "h2.xl\\:text-xl.font-bold.mt-2.hover\\:underline::text"
@@ -44,7 +48,8 @@ class QuotesSpider(scrapy.Spider):
             city = item.css("span.bg-blue-50 div::text").get()
 
             yield {
-                "category_id": category_id,
+                "np": np,
+                "url_general": url_general,
                 "link": href,
                 "description": description,
                 "company": company,
@@ -53,9 +58,22 @@ class QuotesSpider(scrapy.Spider):
                 "salary_type": salary_type,
                 "city": city,
             }
-        next_page = response.css("a.flex.rounded-full::attr(href)")
-        full_url = response.urljoin(next_page)
-        yield response.follow(full_url, self.parse)
+        next_page = response.css(
+            "div.lg\\:container a.flex.rounded-full.text-base::attr(href)"
+        ).get()
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        # /html/body/section/main/div[1]/div/ul/li[10]/a
+        # /html/body/section/main/div[1]/div/ul/li[10]/a
+        # or +25
+
+        next_page_url = urljoin(url_general, next_page)
+        print(next_page_url)
+        if next_page:
+            yield scrapy.Request(
+                url=next_page_url,
+                callback=self.parse_link,
+                meta={"general_url": url_general},
+            )
 
         # yield {"name": name, "url": url, "category_id": category_id}
 
