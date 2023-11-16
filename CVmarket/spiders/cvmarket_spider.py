@@ -26,7 +26,7 @@ class QuotesSpider(scrapy.Spider):
                     },
                 )
                 n = n + 1
-                break
+
             else:
                 yield {"name": name, "url": link}
 
@@ -54,7 +54,7 @@ class QuotesSpider(scrapy.Spider):
 
             yield {
                 "np": page,
-                "url_general": url_general,
+                "url": url_general,
                 "link": href,
                 "description": description,
                 "company": company,
@@ -67,8 +67,6 @@ class QuotesSpider(scrapy.Spider):
         next_page = response.xpath(
             "/html/body/section/main/div[1]/div/ul/li[10]/a/@href"
         ).get()
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        # or +25
 
         next_page_url = urljoin(url_general, next_page)
         print(next_page_url)
