@@ -7,9 +7,9 @@ import os
 import zipfile
 import io
 
-
+config_path = os.path.join(os.path.dirname(__file__), "config.cfg")
 config = configparser.ConfigParser()
-config.read("config.cfg")
+config.read(config_path)
 
 
 class ChromeDrivers:

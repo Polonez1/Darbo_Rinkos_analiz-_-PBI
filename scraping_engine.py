@@ -1,4 +1,5 @@
 import configparser
+import os
 from selenium import webdriver
 from selenium_stealth import stealth
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -24,7 +25,8 @@ from selenium.webdriver.common.by import By
 
 class ScrapingEngine(By):
     config = configparser.ConfigParser()
-    config.read("config.cfg")
+    config_path = os.path.join(os.path.dirname(__file__), "config.cfg")
+    config.read(config_path)
     chrome_driver_path = config.get("selenium config", "driver_path")
 
     def __init__(self) -> None:
