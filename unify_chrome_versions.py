@@ -15,6 +15,8 @@ config.read("config.cfg")
 class ChromeDrivers:
     driver_endpoints = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json"
     chrome_drivers_page = "https://googlechromelabs.github.io/chrome-for-testing/"
+    chrome_driver_path = config.get("selenium config", "driver_path")
+    chrome_proxy_driver_path = config.get("selenium config", "chrome_proxy")
 
     def __init__(self) -> None:
         self.channel = config.get("download driver", "channel")
@@ -31,10 +33,11 @@ class ChromeDrivers:
                 print(f"Version Google Chrome: {version}")
                 return version
         except Exception as e:
-            print(f"Błąd podczas sprawdzania wersji Chrome: {e}")
+            print(f"Version check error Chrome: {e}")
             return None
 
-    def get_chromedriver_version(self, chromedriver_path):
+    def get_chromedriver_version(self, chromedriver_path: str):
+        driver_file_name = os.path.basename(chromedriver_path)
         try:
             result = subprocess.run(
                 [chromedriver_path, "--version"],
@@ -43,11 +46,21 @@ class ChromeDrivers:
                 check=True,
             )
             version_info = result.stdout.strip()
-            print(f"Version chromedriver.exe: {version_info}")
+            print(f"Version {driver_file_name}: {version_info}")
             return version_info
         except subprocess.CalledProcessError as e:
-            print(f"Błąd podczas sprawdzania wersji chromedriver.exe: {e}")
+            print(f"Check version error {driver_file_name}: {e}")
             return None
+
+    def get_chrome_versions(self):
+        chrome_version = self.get_chrome_version()
+        driver_version = self.get_chromedriver_version(
+            chromedriver_path=self.chrome_proxy_driver_path
+        )
+
+        print(
+            f"Chrome version: {chrome_version}\n Chrome driver version: {driver_version}"
+        )
 
     def get_driver_download_endpoints(self):
         try:
@@ -95,4 +108,4 @@ class ChromeDrivers:
 if "__main__" == __name__:
     # c = get_driver_download_endpoints()
     c = ChromeDrivers()
-    c._get_download_url()
+    c.get_chrome_versions()

@@ -1,28 +1,32 @@
-import pandas as pd
-import re
-
+import configparser
 from selenium import webdriver
 from selenium_stealth import stealth
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.common.exceptions import JavascriptException
-from selenium.common.exceptions import NoSuchElementException
+
+# from selenium.common.exceptions import JavascriptException
+# from selenium.common.exceptions import NoSuchElementException
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-from selenium.common.exceptions import NoSuchElementException
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
 
-from bs4 import BeautifulSoup
+# from selenium.common.exceptions import NoSuchElementException
 
-from random import randint
+# from bs4 import BeautifulSoup
 
-import pickle
-import time
-from time import sleep
+# from random import randint
+
+# import pickle
+# import time
+# from time import sleep
 
 
-class ScrapingEngine:
-    driver_path = "./chromedriver.exe"
+class ScrapingEngine(webdriver.common.by):
+    config = configparser.ConfigParser()
+    config.read("config.cfg")
+    chrome_driver_path = config.get("selenium config", "driver_path")
+    chrome_proxy_driver_path = config.get("selenium config", "chrome_proxy")
 
     def __init__(self) -> None:
         self.options = webdriver.ChromeOptions()
@@ -33,7 +37,7 @@ class ScrapingEngine:
         self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
         self.options.add_argument(f"user-agent={self.user_agent}")
 
-        chrome_service = ChromeService(executable_path=self.driver_path)
+        chrome_service = ChromeService(executable_path=self.chrome_driver_path)
         self.driver = webdriver.Chrome(service=chrome_service, options=self.options)
         stealth(
             self.driver,
@@ -44,3 +48,8 @@ class ScrapingEngine:
             renderer="Intel Iris OpenGL Engine",
             fix_hairline=True,
         )
+
+
+if "__main__" == __name__:
+    # c = get_driver_download_endpoints()
+    scr = ScrapingEngine()
