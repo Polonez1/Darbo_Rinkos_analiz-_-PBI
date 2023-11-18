@@ -3,6 +3,7 @@
 A project created for scraping dynamic websites using selenium and steal. 
 
 - easy way to send a driver compatible with the Chrome version
+- works on web with "incapsula"
 
 # Installiation
 
@@ -25,6 +26,11 @@ https://googlechromelabs.github.io/chrome-for-testing/
 
 If you use Chrome version 114 or older:
 https://chromedriver.chromium.org/downloads
+
+## Selenium config
+
+1. All selenium configs in scraping_engine.py. For example: user_agent and other
+2. Open scraping_engine.py and add or switch ScrapingEngine class __init__ args. 
 
 # Doc
 
