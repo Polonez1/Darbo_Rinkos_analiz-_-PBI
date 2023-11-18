@@ -106,4 +106,4 @@ class ChromeDrivers:
 if "__main__" == __name__:
     # c = get_driver_download_endpoints()
     c = ChromeDrivers()
-    c.get_chrome_versions()
+    c.get_chromedriver_version()

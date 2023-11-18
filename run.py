@@ -2,34 +2,37 @@ import click
 import unify_chrome_versions as Chrome
 
 
-@click.command()
-@click.argument("chrome", required=False)
+@click.group()
+def cli():
+    pass
+
+
+@cli.command(name="chrome")
 @click.option("-v", "--version", is_flag=True, help="Show version")
-def check_chrome_version(chrome, version):
+def check_chrome_version(version):
     chrome_instance = Chrome.ChromeDrivers()
     if version:
         chrome_instance.get_chrome_version()
     else:
-        print("No specific action specified.")
+        print("No specific action specified for Chrome.")
 
 
-@click.command()
-@click.argument("driver", required=False)
+@cli.command(name="driver")
 @click.option("-e", "--endpoints", is_flag=True, help="Show download endpoints")
 @click.option("-d", "--download", is_flag=True, help="Enable verbose mode.")
 @click.option("-v", "--version", is_flag=True, help="Show version")
-def check_chrome_version(driver, download, endpoints, version):
-    chrome_instance = Chrome.ChromeDrivers()
+def check_chrome_version_driver(endpoints, download, version):
+    chrome_instance1 = Chrome.ChromeDrivers()
     if download:
-        chrome_instance.download_chrome_driver()
+        chrome_instance1.download_chrome_driver()
         print("Driver downloaded")
     if endpoints:
-        endp = chrome_instance.get_driver_download_endpoints(print_data=True)
+        endp = chrome_instance1.get_driver_download_endpoints(print_data=True)
     if version:
-        chrome_instance.get_chromedriver_version()
+        chrome_instance1.get_chromedriver_version()
     else:
-        print("No specific action specified.")
+        print("No specific action specified for driver.")
 
 
 if __name__ == "__main__":
-    check_chrome_version()
+    cli()
