@@ -22,11 +22,10 @@ from selenium.webdriver.common.by import By
 # from time import sleep
 
 
-class ScrapingEngine(webdriver.common.by):
+class ScrapingEngine(By):
     config = configparser.ConfigParser()
     config.read("config.cfg")
     chrome_driver_path = config.get("selenium config", "driver_path")
-    chrome_proxy_driver_path = config.get("selenium config", "chrome_proxy")
 
     def __init__(self) -> None:
         self.options = webdriver.ChromeOptions()
@@ -48,6 +47,8 @@ class ScrapingEngine(webdriver.common.by):
             renderer="Intel Iris OpenGL Engine",
             fix_hairline=True,
         )
+
+        self.By = type("", (By,), {})
 
 
 if "__main__" == __name__:
