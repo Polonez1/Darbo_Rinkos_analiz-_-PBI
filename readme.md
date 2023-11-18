@@ -7,9 +7,12 @@ A project created for scraping dynamic websites using selenium and steal.
 
 # Installiation
 
-Install requirements
+Install requirements and clone repository:
+
+```git clone https://github.com/Polonez1/Selenium_Steal```
 
 ```pip install -r requirements.txt```
+
 
 or install package to you project
 
