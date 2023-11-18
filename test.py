@@ -24,13 +24,21 @@ def _pop_up_closer():
     time.sleep(3)
 
 
-def get_cookies(url: str = "https://www.whoscored.com/") -> str("html file"):
+def get_cookies(
+    url: str = "https://www.whoscored.com/Regions/108/Tournaments/5/Italy-Serie-A",
+) -> str("html file"):
     """Get cookies from url"""
     scrap.driver.get(url)
     _pop_up_closer()
-    time.sleep(120)
+    time.sleep(5)
+    test_data = scrap.driver.find_element(
+        scrap.By.CLASS_NAME, "team-link "
+    ).get_attribute("text")
+
+    print(test_data)
+
     scrap.driver.quit()
-    print("Cookies save")
+    print("Debug point: 1")
 
 
 if "__main__" == __name__:

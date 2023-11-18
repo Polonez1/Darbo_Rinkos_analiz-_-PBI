@@ -5,6 +5,14 @@ A project created for scraping dynamic websites using selenium and steal.
 - easy way to send a driver compatible with the Chrome version
 - works on web with "incapsula"
 
+# Project structure
+
+- ```config.cfg``` - config file. 
+- ```unify_chrome_versions.py``` - allows you to compare and download Chrome and Google Chrome versions
+- ```scraping_engine.py``` - creates a scraping engine with steal.
+- ```setup.py``` - install module
+- ```run.py``` - commands module 
+
 # Installiation
 
 Install requirements and clone repository:
