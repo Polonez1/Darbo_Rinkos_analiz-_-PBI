@@ -11,6 +11,10 @@ Install requirements
 
 ```pip install -r requirements.txt```
 
+or install package to you project
+
+```pip install -e git+https://github.com/Polonez1/Selenium_Steal.git#egg=SeleniumStealth```
+
 # Check versions
 ```python run.py chrome -v```
 ```python run.py driver -v```
