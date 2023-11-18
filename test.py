@@ -25,17 +25,11 @@ def _pop_up_closer():
 
 
 def get_cookies(
-    url: str = "https://www.whoscored.com/Regions/108/Tournaments/5/Italy-Serie-A",
+    url: str = "https://www.flashscore.com/l",
 ) -> str("html file"):
     """Get cookies from url"""
     scrap.driver.get(url)
-    _pop_up_closer()
-    time.sleep(5)
-    test_data = scrap.driver.find_element(
-        scrap.By.CLASS_NAME, "team-link "
-    ).get_attribute("text")
-
-    print(test_data)
+    time.sleep(10)
 
     scrap.driver.quit()
     print("Debug point: 1")
