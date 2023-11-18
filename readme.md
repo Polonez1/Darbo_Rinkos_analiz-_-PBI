@@ -11,6 +11,10 @@ Install requirements
 
 ```pip install -r requirements.txt```
 
+# Check versions
+```python run.py chrome -v```
+```python run.py driver -v```
+
 # Config
 
 general config file ```config.cfg```
