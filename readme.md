@@ -17,7 +17,7 @@ or install package to you project
 
 # Check versions
 ```python run.py chrome -v```
-```python run.py driver -v```
+```python run.py driver -v``` (afted driver download)
 
 # Config
 
