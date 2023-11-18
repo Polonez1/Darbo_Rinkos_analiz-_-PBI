@@ -15,11 +15,15 @@ def check_chrome_version(chrome, version):
 
 @click.command()
 @click.argument("driver", required=False)
+@click.option("-e", "--endpoints", is_flag=True, help="Show download endpoints")
 @click.option("-d", "--download", is_flag=True, help="Enable verbose mode.")
-def check_chrome_version(driver, download):
+def check_chrome_version(driver, download, endpoints):
     chrome_instance = Chrome.ChromeDrivers()
     if download:
         chrome_instance.download_chrome_driver()
+        print("Driver downloaded")
+    if endpoints:
+        endp = chrome_instance.get_driver_download_endpoints(print_data=True)
     else:
         print("No specific action specified.")
 

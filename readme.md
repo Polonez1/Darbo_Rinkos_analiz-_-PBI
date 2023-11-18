@@ -8,12 +8,15 @@ Install requirements
 
 ```pip install -r requirements.txt```
 
+# Config
 
-# Steps
+## downloads config
+
+# Doc
 
 1. Download chrome driver
 
-``````
+```python run.py driver -d```
 
 
 

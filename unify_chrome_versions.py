@@ -62,13 +62,16 @@ class ChromeDrivers:
             f"Chrome version: {chrome_version}\n Chrome driver version: {driver_version}"
         )
 
-    def get_driver_download_endpoints(self):
+    def get_driver_download_endpoints(self, print_data: bool = False):
         try:
             response = requests.get(self.driver_endpoints)
             response.raise_for_status()
             data = response.json()
             json_obj = json.dumps(data, indent=2)
-            print(json_obj)
+            if print_data:
+                print(json_obj)
+            else:
+                pass
             return data
         except requests.exceptions.RequestException as e:
             print(f"Page download error: {e}")
