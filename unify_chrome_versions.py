@@ -16,7 +16,6 @@ class ChromeDrivers:
     driver_endpoints = "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json"
     chrome_drivers_page = "https://googlechromelabs.github.io/chrome-for-testing/"
     chrome_driver_path = config.get("selenium config", "driver_path")
-    chrome_proxy_driver_path = config.get("selenium config", "chrome_proxy")
 
     def __init__(self) -> None:
         self.channel = config.get("download driver", "channel")
@@ -36,7 +35,7 @@ class ChromeDrivers:
             print(f"Version check error Chrome: {e}")
             return None
 
-    def get_chromedriver_version(self, chromedriver_path: str):
+    def get_chromedriver_version(self, chromedriver_path: str = chrome_driver_path):
         driver_file_name = os.path.basename(chromedriver_path)
         try:
             result = subprocess.run(
@@ -55,11 +54,7 @@ class ChromeDrivers:
     def get_chrome_versions(self):
         chrome_version = self.get_chrome_version()
         driver_version = self.get_chromedriver_version(
-            chromedriver_path=self.chrome_proxy_driver_path
-        )
-
-        print(
-            f"Chrome version: {chrome_version}\n Chrome driver version: {driver_version}"
+            chromedriver_path=self.chrome_driver_path
         )
 
     def get_driver_download_endpoints(self, print_data: bool = False):
