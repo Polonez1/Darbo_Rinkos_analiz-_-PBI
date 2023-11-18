@@ -1,6 +1,8 @@
 # About Project
 
-A project created for scraping dynamic websites using selenium and steal.
+A project created for scraping dynamic websites using selenium and steal. 
+
+- easy way to send a driver compatible with the Chrome version
 
 # Installiation
 
@@ -17,6 +19,12 @@ general config file ```config.cfg```
 1. run ```python run.py driver -e (--endpoints)``` open to see download endpoints
 2. in config.cfg swap endpoints
 3. After download driver
+
+Manual download page:
+https://googlechromelabs.github.io/chrome-for-testing/
+
+If you use Chrome version 114 or older:
+https://chromedriver.chromium.org/downloads
 
 # Doc
 
