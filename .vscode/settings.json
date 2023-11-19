@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./Selenium_Steal"
+        "./Selenium_Steal",
+        "./Selenium_Stealh"
     ]
 }
