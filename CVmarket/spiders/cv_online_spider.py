@@ -34,6 +34,13 @@ class QuotesSpider(scrapy.Spider):
             new_string = string.partition("–")[split_part].replace("€", "").strip()
             return new_string
 
+    def __city_split(self, string: str):
+        if string is None:
+            return None
+        else:
+            new_string = string.partition(",")[0].strip()
+            return new_string
+
     def parse_link(self, response):
         url_general = response.meta["general_url"]
         # try:
@@ -55,7 +62,8 @@ class QuotesSpider(scrapy.Spider):
             ).get()
             salary_from = self.__salary_split(salary, split_part=0)
             salary_to = self.__salary_split(salary, split_part=2)
-            city = item.css("div.jsx-3024910437 .vacancy-item__locations::text").get()
+            _city = item.css("div.jsx-3024910437 .vacancy-item__locations::text").get()
+            city = self.__city_split(_city)
 
             yield {
                 # "np": page,
@@ -69,24 +77,6 @@ class QuotesSpider(scrapy.Spider):
                 "city": city,
             }
 
-
-#
-# salary_from = item.css("div.salary-block::attr(data-salary-from)").get()
-# salary_to = item.css("div.salary-block::attr(data-salary-to)").get()
-# salary_type = item.css("span.salary-type::text").get()
-# city = item.css("span.bg-blue-50 div::text").get()
-
-# yield {
-#    #"np": page,
-#    "url": url_general,
-#    "link": href,
-#    "description": description,
-#    "company": company,
-#    "salary_from": salary_from,
-#    "salary_to": salary_to,
-#    "salary_type": salary_type,
-#    "city": city,
-# }
 
 # next_page = response.xpath(
 #    "/html/body/section/main/div[1]/div/ul/li[10]/a/@href"
