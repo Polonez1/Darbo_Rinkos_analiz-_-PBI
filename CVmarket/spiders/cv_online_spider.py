@@ -1,11 +1,16 @@
 import scrapy
 from urllib.parse import urljoin
 import time
+import sys
+
+sys.path.append("./Selenium/")
+from scraping_engine import ScrapingEngine
 
 
 class QuotesSpider(scrapy.Spider):
     name = "cv_online_link_spider"
     start_urls = ["https://www.cvonline.lt/lt/categories"]
+    selenium_engine = ScrapingEngine()
 
     def parse(self, response):
         for a_element in response.css(
@@ -77,10 +82,6 @@ class QuotesSpider(scrapy.Spider):
                 "city": city,
             }
 
-
-# next_page = response.xpath(
-#    "/html/body/section/main/div[1]/div/ul/li[10]/a/@href"
-# ).get()
 
 # next_page_url = urljoin(url_general, next_page)
 # print(next_page_url)
