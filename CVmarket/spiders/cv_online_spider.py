@@ -3,14 +3,14 @@ from urllib.parse import urljoin
 import time
 import sys
 
-sys.path.append("./Selenium/")
-from scraping_engine import ScrapingEngine
+# sys.path.append("./Selenium/")
+# from scraping_engine import ScrapingEngine
 
 
 class QuotesSpider(scrapy.Spider):
     name = "cv_online_link_spider"
     start_urls = ["https://www.cvonline.lt/lt/categories"]
-    selenium_engine = ScrapingEngine()
+    # selenium_engine = ScrapingEngine()
 
     def parse(self, response):
         for a_element in response.css(
