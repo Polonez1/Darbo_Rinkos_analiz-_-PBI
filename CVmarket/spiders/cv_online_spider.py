@@ -2,15 +2,16 @@ import scrapy
 from urllib.parse import urljoin
 import time
 import sys
+from scrapy.http import HtmlResponse
 
-# sys.path.append("./Selenium/")
-# from scraping_engine import ScrapingEngine
+sys.path.append("./Selenium/")
+from scraping_engine import ScrapingEngine
 
 
 class QuotesSpider(scrapy.Spider):
     name = "cv_online_link_spider"
     start_urls = ["https://www.cvonline.lt/lt/categories"]
-    # selenium_engine = ScrapingEngine()
+    selenium_engine = ScrapingEngine()
 
     def parse(self, response):
         for a_element in response.css(
@@ -48,13 +49,17 @@ class QuotesSpider(scrapy.Spider):
 
     def parse_link(self, response):
         url_general = response.meta["general_url"]
-        # try:
-        #    page = response.meta["page"]
-        # except:
-        #    page = "first_page"
+        self.selenium_engine.driver.get(response.url)
+        html_source = self.selenium_engine.driver.page_source
+
+        new_response = HtmlResponse(
+            url=self.selenium_engine.driver.current_url,
+            body=html_source,
+            encoding="utf-8",
+        )
 
         time.sleep(5)
-        for item in response.css("li.vacancies-list__item.false"):
+        for item in new_response.css("li.vacancies-list__item.false"):
             href = item.css("div.jsx-3024910437 a::attr(href)").get()
             description = item.css(
                 "div.jsx-3024910437 span.jsx-3024910437.vacancy-item__title::text"
