@@ -6,6 +6,8 @@ from scrapy.http import HtmlResponse
 
 sys.path.append("./Selenium/")
 from scraping_engine import ScrapingEngine
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 class QuotesSpider(scrapy.Spider):
@@ -50,13 +52,29 @@ class QuotesSpider(scrapy.Spider):
     def parse_link(self, response):
         url_general = response.meta["general_url"]
         self.selenium_engine.driver.get(response.url)
+        time.sleep(10)
+        close = self.selenium_engine.driver.find_element(
+            By.CSS_SELECTOR, "button[type='button'].jsx-4189752321.close-modal-button"
+        )
+        if close:
+            close.click()
+        time.sleep(5)
+        cookies = self.selenium_engine.driver.find_element(
+            By.CLASS_NAME, "cookie-consent-button"
+        )
+        if cookies:
+            cookies.click()
+
         html_source = self.selenium_engine.driver.page_source
+
+        time.sleep(10)
 
         new_response = HtmlResponse(
             url=self.selenium_engine.driver.current_url,
             body=html_source,
             encoding="utf-8",
         )
+        # self.selenium_engine.driver.close()
 
         time.sleep(5)
         for item in new_response.css("li.vacancies-list__item.false"):
@@ -86,6 +104,21 @@ class QuotesSpider(scrapy.Spider):
                 "salary_type": "Prieš mokesčius",
                 "city": city,
             }
+
+        next_page_xpath = '//*[@id="__next"]/div[2]/div[2]/div/div[2]/div/div/nav[1]/button[8]/svg/path'
+
+        next_page = self.selenium_engine.driver.find_element(
+            By.CSS_SELECTOR, "button[aria-label='Next']"
+        )
+        print("NEXTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT")
+        next_page.click()
+
+        time.sleep(10)
+        self.selenium_engine.driver.close()
+
+
+#
+# self.selenium_engine.driver.close()
 
 
 # next_page_url = urljoin(url_general, next_page)
