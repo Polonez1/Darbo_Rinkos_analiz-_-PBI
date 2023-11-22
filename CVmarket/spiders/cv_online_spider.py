@@ -131,5 +131,5 @@ class QuotesSpider(scrapy.Spider):
         self.selenium_engine.driver.close()
 
 
-# scrapy crawl cv_online_link_spider -o output2.json
+# scrapy crawl cv_online_link_spider -o cvonline.json
 # scrapy crawl cv_online_link_spider -o cvonline_category.json
