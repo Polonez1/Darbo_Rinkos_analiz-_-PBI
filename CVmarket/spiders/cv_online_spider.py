@@ -127,7 +127,6 @@ class QuotesSpider(scrapy.Spider):
             else:
                 break
 
-        time.sleep(10)
         self.selenium_engine.driver.close()
 
 

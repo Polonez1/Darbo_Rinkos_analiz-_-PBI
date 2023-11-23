@@ -7,26 +7,28 @@ class QuotesSpider(scrapy.Spider):
     name = "cv_market_links_spider"
     start_urls = ["https://www.cvmarket.lt/darbas-pagal-kategorija"]
 
-    def parse(self, response):
-        n = 1
+    def __init__(self, *args, **kwargs):
+        super(QuotesSpider, self).__init__(*args, **kwargs)
+        self.parse_function = kwargs.get("parse_function", "parse")
+
+    def parse_category(self, response):
         for div_element in response.css("div.mb-1.text-slate-500.font-semibold"):
             link = div_element.css("a::attr(href)").get()
             name = div_element.css("a::text").get()
-            category_id = n
+            yield {"name": name, "url": link}
+
+    def parse(self, response):
+        for div_element in response.css("div.mb-1.text-slate-500.font-semibold"):
+            link = div_element.css("a::attr(href)").get()
+            name = div_element.css("a::text").get()
             if link:
                 full_url = response.urljoin(link)
 
                 yield scrapy.Request(
                     url=full_url,
                     callback=self.parse_link,
-                    meta={
-                        "name": name,
-                        "general_url": full_url,
-                        "category_id": category_id,
-                    },
+                    meta={"name": name, "general_url": full_url},
                 )
-                n = n + 1
-
             else:
                 yield {"name": name, "url": link}
 
@@ -77,8 +79,12 @@ class QuotesSpider(scrapy.Spider):
                 meta={"general_url": url_general, "page": next_page},
             )
 
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.Request(url, getattr(self, self.parse_function, self.parse))
+
         # yield {"name": name, "url": url, "category_id": category_id}
 
 
-# scrapy crawl cv_market_links_spider -o output.json
-#
+# scrapy crawl cv_market_links_spider -o ./output/cvmarket.json
+# scrapy crawl cv_market_links_spider -o ./output/cvmarket_category.json -a parse_function=parse_category
