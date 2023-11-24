@@ -1,31 +1,33 @@
-import playwright
-import re
-from playwright.sync_api import Page, expect
-
 from playwright.sync_api import Playwright, sync_playwright, expect
 
 
-def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto("https://demoqa.com/")
-    page.locator("svg").first.click()
-    page.locator("li").filter(has_text="Text Box").click()
-    page.locator("li").filter(has_text="Check Box").click()
-    page.locator("li").filter(has_text="Radio Button").click()
-    page.locator("li").filter(has_text="Web Tables").click()
-    page.locator("li").filter(has_text="Buttons").click()
-    page.locator("li").filter(has_text=re.compile(r"^Links$")).click()
-    page.locator("li").filter(has_text="Broken Links - Images").click()
-    page.locator("li").filter(has_text="Upload and Download").click()
-    page.locator("li").filter(has_text="Dynamic Properties").click()
-    page.get_by_role("button", name="Visible After 5 Seconds").click()
+class CVonlineParse:
+    general_url: str = "https://www.cvonline.lt/"
 
-    # ---------------------
-    context.close()
-    browser.close()
+    def __init__(self):
+        self.category_hrefs: list = []
+
+    def __collect_hrefs(self):
+        category_block = self.page.wait_for_selector(".categories__vacancy_categories")
+        if category_block:
+            # Teraz możesz pobrać linki z tego bloku
+            links = category_block.query_selector_all("a")
+            for link in links:
+                href = link.get_attribute("href")
+                self.category_hrefs.append(href)
+
+    def parse(self):
+        with sync_playwright() as playwright:
+            browser = playwright.chromium.launch(headless=False)
+            self.context = browser.new_context()
+            self.page = self.context.new_page()
+            self.page.goto("https://www.cvonline.lt/lt/categories")
+            self.page.locator(".jsx-4189752321").first.click()
+            self.page.get_by_label("Accept cookies").click()
+            self.__collect_hrefs()
+            print(self.category_hrefs)
 
 
-with sync_playwright() as playwright:
-    run(playwright)
+if "__main__" == __name__:
+    cv = CVonlineParse()
+    cv.parse()
