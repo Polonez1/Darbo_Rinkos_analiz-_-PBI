@@ -3,3 +3,6 @@ scrapy
 scrapy-selenium
 time
 urllib
+playwright
+pytest-playwright
+#playwright install
