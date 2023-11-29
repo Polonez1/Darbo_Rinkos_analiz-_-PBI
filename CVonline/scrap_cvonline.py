@@ -25,7 +25,6 @@ class CVonlineParse:
             self.page.locator(".jsx-4189752321").first.click()
             self.page.get_by_label("Accept cookies").click()
             self.__collect_hrefs()
-            print(self.category_hrefs)
 
 
 if "__main__" == __name__:
