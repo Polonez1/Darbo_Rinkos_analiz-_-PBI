@@ -86,5 +86,5 @@ class QuotesSpider(scrapy.Spider):
         # yield {"name": name, "url": url, "category_id": category_id}
 
 
-# scrapy crawl cv_market_links_spider -o ./output/cvmarket.json
+# scrapy crawl cv_market_links_spider -o ../output/cvmarket.json
 # scrapy crawl cv_market_links_spider -o ./output/cvmarket_category.json -a parse_function=parse_category
