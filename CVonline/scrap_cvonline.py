@@ -78,7 +78,6 @@ class CVonlineParse:
                 }
                 self.full_data.append(data)
                 print(page, description, salary_from, city)
-                # print(page, company, _salary)
 
             next_button = self.page.query_selector("button[aria-label='Next']")
             page += 1
