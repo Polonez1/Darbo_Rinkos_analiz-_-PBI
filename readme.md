@@ -10,10 +10,10 @@ The project collects and processes data from CVmarket and CVonline. The project 
 - **CVonline** CV online site scraper
     - **scrap_cvonline.py** CV online site scraper
 - **output** Scrap output data
-    - **cvmarket_categories.json**
-    - **cvmarket_categories.json**
-    - **cvmarket_categories.json**
-    - **cvmarket_categories.json**
+    - **cvmarket_categories.json** Category dim data
+    - **cvonline_category.json** Category dim data
+    - **cvmarket.json** General cvmarket data
+    - **cvonline.json** General cvonline data
 - **config.py** Config module
 - **processing.py** Data processing module
 - **scrapy.cfg** scrapy scripts configurations 
