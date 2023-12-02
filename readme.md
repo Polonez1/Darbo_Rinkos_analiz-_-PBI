@@ -31,6 +31,18 @@ Scrap CVmarket Data
 Scrap CVonline Data
 ```python -m CVonline.crawl```
 
-# Docs
+Save transformed data in .xlsx format
+
+Category data:
+```python run.py cat -o``` (by default folder: xlsx_output)
+or 
+```python run.py cat -o ./you_directory/```
+
+Vacancies data:
+```python run.py data -o``` (by default folder: xlsx_output)
+or 
+```python run.py data -o ./you_directory/```
+
+without '-o' I'll just show firs dataframes rows
 
 # PBI

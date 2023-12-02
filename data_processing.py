@@ -1,6 +1,5 @@
 import pandas as pd
 import json
-from urllib.parse import urlparse
 import config
 
 
@@ -60,20 +59,24 @@ class CVonline:
         return df
 
 
-def processing_main():
+class ProcessingData:
     cvm = CVmarket()
-    cvmarket_category = cvm.category_processing()
-    cvmarket_data = cvm.cvmarket_processing()
-
     cvo = CVonline()
-    cvonline_category = cvo.category_processing()
-    cvonline_data = cvo.cvonline_processing()
 
-    # cvmarket = _CVmarket_processing()
+    def processing_cat(self):
+        cvmarket_category = self.cvm.category_processing()
+        cvonline_category = self.cvo.category_processing()
 
-    return cvonline_data
+        return cvmarket_category, cvonline_category
+
+    def processing_main(self):
+        cvmarket_data = self.cvm.cvmarket_processing()
+        cvonline_data = self.cvo.cvonline_processing()
+
+        # cvmarket = _CVmarket_processing()
+
+        return cvmarket_data, cvonline_data
 
 
 if "__main__" == __name__:
-    df = processing_main()
-    print(df)
+    pass
