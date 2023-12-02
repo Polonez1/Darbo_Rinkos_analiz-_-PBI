@@ -25,6 +25,8 @@ Install requirements
 
 # Run
 
+## Scraping
+
 Scrap CVmarket Data
 ```scrapy crawl cv_market_links_spider -o ../output/cvmarket.json``` 
 
@@ -44,5 +46,13 @@ or
 ```python run.py data -o ./you_directory/```
 
 without '-o' I'll just show firs dataframes rows
+
+## Complex Scraping
+
+Run all scrapers:
+```.\parse.bat```
+
+Transform .json data to .xlsx 
+```.\save_data.bat```
 
 # PBI
