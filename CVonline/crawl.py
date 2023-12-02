@@ -1,13 +1,16 @@
 import click
-import scrap_cvonline
+import sys
+
+sys.path.append("./CVonline/")
+
+from scrap_cvonline import CVonlineParse
 
 
-@click.group()
-def cli():
-    pass
-
-
-@cli.command(name="cvonline")
-def check_chrome_version(version):
-    scrap = scrap_cvonline.CVonlineParse()
+@click.command(context_settings=dict(help_option_names=["-h", "--help"]))
+def cvonline():
+    scrap = CVonlineParse()
     scrap.parse()
+
+
+if __name__ == "__main__":
+    cvonline()

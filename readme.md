@@ -28,10 +28,8 @@ Install requirements
 Scrap CVmarket Data
 ```scrapy crawl cv_market_links_spider -o ../output/cvmarket.json``` 
 
-
-
-
-
+Scrap CVonline Data
+```python -m CVonline.crawl```
 
 # Docs
 

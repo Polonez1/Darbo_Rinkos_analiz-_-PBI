@@ -116,4 +116,3 @@ class CVonlineParse:
 if "__main__" == __name__:
     cv = CVonlineParse()
     cv.parse()
-    print(cv.full_data)

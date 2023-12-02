@@ -1,8 +1,7 @@
-selenium
 scrapy
-scrapy-selenium
 time
 urllib
 playwright
 pytest-playwright
+click
 #playwright install
