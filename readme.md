@@ -56,3 +56,10 @@ Transform .json data to .xlsx
 ```.\save_data.bat```
 
 # PBI
+
+PBI report
+
+![Alt text](image.png)
+
+
+![Alt text](image-1.png)
