@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import config
+import numpy as np
 
 
 def _read_json(json_object: str):
@@ -43,6 +44,18 @@ class CVonline:
         df["category_id"] = df["url"].str.rpartition("=")[2]
         return df
 
+    def _check_per_hour(self, df: pd.DataFrame):
+        condition = df["salary_from"].notna() & df["salary_from"].str.contains("h")
+        condition2 = df["salary_to"].notna() & df["salary_to"].str.contains("h")
+
+        df["salary_type"] = np.where(condition, "per hour", df["salary_type"])
+        df.loc[condition, "salary_from"] = None
+
+        df["salary_type"] = np.where(condition2, "per hour", df["salary_to"])
+        df.loc[condition2, "salary_to"] = None
+
+        return df
+
     def category_processing(self):
         json_obj = _read_json(json_object=self.cvonline_category_file)
         df = pd.DataFrame(json_obj)
@@ -55,6 +68,7 @@ class CVonline:
         df = pd.DataFrame(json_obj)
         df["source"] = self.cvonline
         df = self._get_id_from_url(df)
+        df = self._check_per_hour(df)
 
         return df
 
@@ -80,7 +94,6 @@ class ProcessingData:
 
 if "__main__" == __name__:
     cv = ProcessingData()
-    df, df2 = cv.processing_cat()
-    print(df.loc[df["name"] == "Administravimas"])
-    print("---------------------------------------")
-    print(df2.loc[df2["name"] == "Administravimas"])
+    df, df2 = cv.processing_main()
+    dff = df2.loc[df2["salary_type"].notna() & df2["salary_to"].str.contains("h")]
+    print(dff[["salary_to", "salary_type"]])
