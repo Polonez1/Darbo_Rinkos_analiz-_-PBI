@@ -79,4 +79,8 @@ class ProcessingData:
 
 
 if "__main__" == __name__:
-    pass
+    cv = ProcessingData()
+    df, df2 = cv.processing_cat()
+    print(df.loc[df["name"] == "Administravimas"])
+    print("---------------------------------------")
+    print(df2.loc[df2["name"] == "Administravimas"])
