@@ -11,9 +11,14 @@ def _read_json(json_object: str):
 
 
 class CVmarket:
+    web_url: str = config.cvmarket_url
     cvmarket: str = config.cvmarket_name
     cvmarket_category_file: str = config.category_file.format(name=cvmarket)
     cvmarket_data: str = config.data_file.format(name=cvmarket)
+
+    def _concat_url(self, df: pd.DataFrame):
+        df["full_url"] = self.web_url + df["link"]
+        return df
 
     def _get_id_from_url(self, df: pd.DataFrame) -> pd.DataFrame:
         df["category_id"] = df["url"].str.rpartition("-")[2]
@@ -31,14 +36,20 @@ class CVmarket:
         df = pd.DataFrame(json_obj)
         df["source"] = self.cvmarket
         df = self._get_id_from_url(df)
+        df = self._concat_url(df)
 
         return df
 
 
 class CVonline:
+    web_url: str = config.cvonline_url
     cvonline: str = config.cvonline_name
     cvonline_category_file: str = config.category_file.format(name=cvonline)
     cvonline_data: str = config.data_file.format(name=cvonline)
+
+    def _concat_url(self, df: pd.DataFrame):
+        df["full_url"] = self.web_url + df["link"]
+        return df
 
     def _get_id_from_url(self, df: pd.DataFrame) -> pd.DataFrame:
         df["category_id"] = df["url"].str.rpartition("=")[2]
@@ -51,7 +62,7 @@ class CVonline:
         df["salary_type"] = np.where(condition, "per hour", df["salary_type"])
         df.loc[condition, "salary_from"] = None
 
-        df["salary_type"] = np.where(condition2, "per hour", df["salary_to"])
+        df["salary_type"] = np.where(condition2, "per hour", df["salary_type"])
         df.loc[condition2, "salary_to"] = None
 
         return df
@@ -69,6 +80,7 @@ class CVonline:
         df["source"] = self.cvonline
         df = self._get_id_from_url(df)
         df = self._check_per_hour(df)
+        df = self._concat_url(df)
 
         return df
 
@@ -95,5 +107,7 @@ class ProcessingData:
 if "__main__" == __name__:
     cv = ProcessingData()
     df, df2 = cv.processing_main()
-    dff = df2.loc[df2["salary_type"].notna() & df2["salary_to"].str.contains("h")]
+    dff = df2.loc[
+        df2["description"] == "DARBUOTOJŲ SAUGOS IR SVEIKATOS SPECIALISTAS (-Ė)"
+    ]
     print(dff[["salary_to", "salary_type"]])
